@@ -1,6 +1,5 @@
 import pymysql
 import pandas as pd
-import asyncio
 
 class Database(object):
     def __init__(self, host, user, password):
