@@ -64,4 +64,14 @@ class Database(object):
             print(ex)
             pass
     
-
+    def searchTrainingData(self):
+        with self.dbConnection.cursor() as db:
+            sql = "SELECT * FROM `germancredit` LIMIT 800"
+            db.execute(sql)
+            return db.fetchall()
+    
+    def searchEvaluationData(self):
+        with self.dbConnection.cursor() as db:
+            sql = "SELECT * FROM `germancredit` LIMIT 200 OFFSET 800"
+            db.execute(sql)
+            return db.fetchall()
