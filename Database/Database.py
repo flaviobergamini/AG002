@@ -1,4 +1,6 @@
 import pymysql
+import pandas as pd
+import asyncio
 
 class Database(object):
     def __init__(self, host, user, password):
@@ -66,12 +68,26 @@ class Database(object):
     
     def searchTrainingData(self):
         with self.dbConnection.cursor() as db:
-            sql = "SELECT * FROM `germancredit` LIMIT 800"
+            sql = 'SELECT * FROM `germancredit` LIMIT 800'
             db.execute(sql)
             return db.fetchall()
     
     def searchEvaluationData(self):
         with self.dbConnection.cursor() as db:
-            sql = "SELECT * FROM `germancredit` LIMIT 200 OFFSET 800"
+            sql = 'SELECT * FROM `germancredit` LIMIT 200 OFFSET 800'
             db.execute(sql)
             return db.fetchall()
+    
+    def exportDataset(self):
+        with self.dbConnection.cursor() as db:
+            db.execute('SELECT * FROM `germancredit`')
+            result = db.fetchall()  
+
+            listSeries = []
+            for aux in result:
+                info = pd.Series(aux)
+                listSeries.append(info)
+            
+            df = pd.DataFrame(listSeries)
+            df.to_csv('statlog_germancredit.csv', sep=';', encoding="utf-8", index=False)
+

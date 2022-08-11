@@ -12,3 +12,4 @@ if __name__=="__main__":
     db.createDatabase()   
     print(len(db.searchTrainingData()))
     print(len(db.searchEvaluationData()))
+    db.exportDataset()
