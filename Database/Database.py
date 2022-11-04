@@ -10,7 +10,8 @@ class Database(object):
             charset = "utf8mb4",
             cursorclass = pymysql.cursors.DictCursor
         )
-    
+
+    #1. Criando o banco de dados junto com a tabela e inserindo os dados
     def createDatabase(self):
         try:
             with self.dbConnection.cursor() as db:
@@ -47,7 +48,7 @@ class Database(object):
                             `gastarb` int DEFAULT NULL,
                             `kredit` int DEFAULT NULL,
                             PRIMARY KEY (`id`)
-                        ) ENGINE=InnoDB AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;'''
+                        ) ENGINE=InnoDB AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;'''
 
                 db.execute(sql)
                 self.dbConnection.commit()
@@ -65,6 +66,7 @@ class Database(object):
             print(ex)
             pass
     
+    # Fazer a busca dos dados de treinamento no banco e retornando em DataFrame Pandas
     def searchTrainingData(self):
         with self.dbConnection.cursor() as db:
             sql = 'SELECT * FROM `germancredit` LIMIT 800'
@@ -78,6 +80,7 @@ class Database(object):
             
             return pd.DataFrame(listSeries)
     
+    # Fazer a busca dos dados de avaliação no banco e retornando em DataFrame Pandas
     def searchEvaluationData(self):
         with self.dbConnection.cursor() as db:
             sql = 'SELECT * FROM `germancredit` LIMIT 200 OFFSET 800'
@@ -91,6 +94,19 @@ class Database(object):
             
             return pd.DataFrame(listSeries)
     
+    def searchData(self):
+        with self.dbConnection.cursor() as db:
+            db.execute('SELECT * FROM `germancredit`')
+            result = db.fetchall()  
+
+            listSeries = []
+            for aux in result:
+                info = pd.Series(aux)
+                listSeries.append(info)
+            
+            return pd.DataFrame(listSeries)
+    
+    # Fazer a busca dos dados no banco e salvando em um Dataset em formato CSV
     def exportDataset(self):
         with self.dbConnection.cursor() as db:
             db.execute('SELECT * FROM `germancredit`')
