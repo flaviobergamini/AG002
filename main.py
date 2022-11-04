@@ -55,7 +55,7 @@ if __name__=="__main__":
             listSeries.append(credit_his)
             # Verw -> purpose
             purpose=None
-            while((purpose!=1 and purpose!=2 and purpose!=3 and purpose!=4 and
+            while((purpose!=0 and purpose!=1 and purpose!=2 and purpose!=3 and purpose!=4 and
             purpose!=5 and purpose!=6 and purpose!=7 and purpose!=8 
             and purpose!=9 and purpose!=10)):
                 purpose=int(input('Purpose: '))
